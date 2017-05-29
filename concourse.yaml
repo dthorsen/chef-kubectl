@@ -13,7 +13,7 @@ jobs:
           repository: chef/chefdk
           tag: 0.15.15
       inputs:
-        -name: git-chef-kubectl
+      - name: git-chef-kubectl
       platform: linux
       run:
         path: sh
