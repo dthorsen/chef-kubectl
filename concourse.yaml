@@ -12,12 +12,12 @@ jobs:
         source:
           repository: chef/chefdk
           tag: 0.15.15
-        inputs:
-          -name: git-chef-kubectl
-        platform: linux
-        run:
-          path: sh
-          args: ['-c', 'cd git-chef-kubectl && chef exec rake ec2']
+      inputs:
+        -name: git-chef-kubectl
+      platform: linux
+      run:
+        path: sh
+        args: ['-c', 'cd git-chef-kubectl && chef exec rake ec2']
       on_success:
         put: git-chef-kubectl
         params:
