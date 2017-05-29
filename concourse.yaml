@@ -1,0 +1,45 @@
+jobs:
+- name: chef-kubectl-pr
+  public: true
+  serial: true
+  plan:
+  - get: git-chef-kubectl
+    trigger: true
+  - task: rake-ec2
+    config:
+      image_resource:
+        type: docker-image
+        source:
+          repository: chef/chefdk
+          tag: 0.15.15
+        inputs:
+          -name: git-chef-kubectl
+        platform: linux
+        run:
+          path: sh
+          args: ['-c', 'cd git-chef-kubectl && chef exec rake ec2']
+      on_success:
+        put: git-chef-kubectl
+        params:
+          path: git-chef-kubectl
+          status: success
+      on_failure:
+        put: git-chef-kubectl
+        params:
+          path: git-chef-kubectl
+          status: failure
+
+resources:
+- name: git-chef-kubectl
+  type: pull-request
+  source:
+    repo: dthorsen/chef-kubectl
+    access_token: {{github-access-token}}
+    username: {{github-username}}
+    private_key: {{github-private-key}}
+
+resource_types:
+- name: pull-request
+  type: docker-image
+  source:
+    repository: jtarchie/pr
