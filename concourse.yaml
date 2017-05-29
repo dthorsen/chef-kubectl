@@ -15,9 +15,16 @@ jobs:
       inputs:
       - name: git-chef-kubectl
       platform: linux
+      params:
+        AWS_SSH_KEY: {{AWS_SSH_KEY}}
+        AWS_SGS: {{AWS_SGS}}
+        AWS_SUBNET: {{AWS_SUBNET}}
+        SSH_PRIVATE_KEY: {{SSH_PRIVATE_KEY}}
+        AWS_ACCESS_KEY_ID: {{AWS_ACCESS_KEY_ID}}
+        AWS_SECRET_ACCESS_KEY: {{AWS_SECRET_ACCESS_KEY}}
       run:
         path: sh
-        args: ['-c', 'cd git-chef-kubectl && chef exec rake ec2']
+        args: ['-c', 'mkdir -p ~/.ssh && cat "${SSH_PRIVATE_KEY}" > ~/.ssh/sshkey.pem && chmod 700 ~/.ssh && chmod 600 ~/.ssh/sshkey.pem && cd git-chef-kubectl && chef exec rake ec2']
     on_success:
       put: git-chef-kubectl
       params:

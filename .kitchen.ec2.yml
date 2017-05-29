@@ -9,7 +9,7 @@ driver:
   instance_type: t2.small
 
 transport:
-  ssh_key: <%= ENV['SSH_PRIVATE_KEY'] %>
+  ssh_key: ~/.ssh/sshkey.pem
   connection_timeout: 10
   connection_retries: 5
   username: ec2-user
