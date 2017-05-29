@@ -43,6 +43,7 @@ resources:
     repo: dthorsen/chef-kubectl
     access_token: {{github-access-token}}
     username: {{github-username}}
+    disable_forks: true
 
 resource_types:
 - name: pull-request
