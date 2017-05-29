@@ -12,7 +12,7 @@ transport:
   ssh_key: ~/.ssh/sshkey.pem
   connection_timeout: 10
   connection_retries: 5
-  username: ec2-user
+  username: centos
 
 provisioner:
   name: chef_solo
