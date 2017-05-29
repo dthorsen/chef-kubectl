@@ -1,0 +1,33 @@
+---
+driver:
+  name: ec2
+  aws_ssh_key_id: <%= ENV['AWS_SSH_KEY'] %>
+  security_group_ids: <%= ENV['AWS_SGS'] %>
+  region: us-east-1
+  availability_zone: a
+  subnet_id: <%= ENV['AWS_SUBNET'] %>
+  instance_type: t2.small
+
+transport:
+  ssh_key: ~/.ssh/sshkey.pem
+  connection_timeout: 10
+  connection_retries: 5
+  username: centos
+
+provisioner:
+  name: chef_solo
+  require_chef_omnibus: 12.11.18
+
+platforms:
+  - name: centos-7
+    block_device_mappings:
+    - device_name: /dev/sda
+      ebs:
+        volume_size: 10
+        delete_on_termination: true
+
+suites:
+  - name: default
+    run_list:
+      - recipe[kubectl::default]
+    attributes:

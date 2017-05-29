@@ -1,0 +1,57 @@
+jobs:
+- name: chef-kubectl-pr
+  public: true
+  serial: true
+  plan:
+  - get: git-chef-kubectl
+    trigger: true
+  - do:
+    - put: git-chef-kubectl
+      params:
+        path: git-chef-kubectl
+        status: pending
+  - task: rake-ec2
+    config:
+      image_resource:
+        type: docker-image
+        source:
+          repository: chef/chefdk
+          tag: 0.15.15
+      inputs:
+      - name: git-chef-kubectl
+      platform: linux
+      params:
+        AWS_SSH_KEY: {{AWS_SSH_KEY}}
+        AWS_SGS: {{AWS_SGS}}
+        AWS_SUBNET: {{AWS_SUBNET}}
+        SSH_PRIVATE_KEY: {{SSH_PRIVATE_KEY}}
+        AWS_ACCESS_KEY_ID: {{AWS_ACCESS_KEY_ID}}
+        AWS_SECRET_ACCESS_KEY: {{AWS_SECRET_ACCESS_KEY}}
+      run:
+        path: sh
+        args: ['-c', 'mkdir -p ~/.ssh && echo "${SSH_PRIVATE_KEY}" > ~/.ssh/sshkey.pem && chmod 700 ~/.ssh && chmod 600 ~/.ssh/sshkey.pem && cd git-chef-kubectl && chef exec rake ec2']
+    on_success:
+      put: git-chef-kubectl
+      params:
+        path: git-chef-kubectl
+        status: success
+    on_failure:
+      put: git-chef-kubectl
+      params:
+        path: git-chef-kubectl
+        status: failure
+
+resources:
+- name: git-chef-kubectl
+  type: pull-request
+  source:
+    repo: dthorsen/chef-kubectl
+    access_token: {{github-access-token}}
+    username: {{github-username}}
+    disable_forks: true
+
+resource_types:
+- name: pull-request
+  type: docker-image
+  source:
+    repository: jtarchie/pr

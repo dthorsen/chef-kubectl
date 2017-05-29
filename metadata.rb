@@ -5,3 +5,6 @@ license 'all_rights'
 description 'Installs/Configures kubectl'
 long_description 'Installs/Configures kubectl'
 version '0.1.0'
+
+issues_url 'https://github.com/dthorsen/chef-kubectl/issues'
+source_url 'https://github.com/dthorsen/chef-kubectl'
