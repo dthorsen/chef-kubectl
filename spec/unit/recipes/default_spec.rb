@@ -16,5 +16,9 @@ describe 'kubectl::default' do
     it 'converges successfully' do
       expect { chef_run }.to_not raise_error
     end
+
+    it 'downloads kubectl' do
+      expect(chef_run).to create_remote_file('/usr/local/bin/kubectl')
+    end
   end
 end

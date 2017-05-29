@@ -1,0 +1,25 @@
+jobs:
+- name: build-docker-image
+  public: true
+  serial: true
+  plan:
+  - get: git-concourse-build-docker-image
+    trigger: true
+  - put: docker-image
+    params:
+      build: git-concourse-build-docker-image/ci
+
+resources:
+- name: git-chef-kubectl
+  type: git
+  source:
+    uri: git@github.com:dthorsen/chef-kubectl.git
+    branch: master
+    private_key: {{github-private-key}}
+
+- name: docker-image
+  type: docker-image
+  source:
+    username: {{docker-hub-username}}
+    password: {{docker-hub-password}}
+    repository: {{docker-create-concourse-go-image}}

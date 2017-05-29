@@ -1,4 +1,3 @@
 # kubectl
 
-TODO: Enter the cookbook description here.
-
+This cookbook installs kubectl
