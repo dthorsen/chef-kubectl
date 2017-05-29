@@ -18,16 +18,16 @@ jobs:
       run:
         path: sh
         args: ['-c', 'cd git-chef-kubectl && chef exec rake ec2']
-      on_success:
-        put: git-chef-kubectl
-        params:
-          path: git-chef-kubectl
-          status: success
-      on_failure:
-        put: git-chef-kubectl
-        params:
-          path: git-chef-kubectl
-          status: failure
+    on_success:
+      put: git-chef-kubectl
+      params:
+        path: git-chef-kubectl
+        status: success
+    on_failure:
+      put: git-chef-kubectl
+      params:
+        path: git-chef-kubectl
+        status: failure
 
 resources:
 - name: git-chef-kubectl
@@ -36,7 +36,6 @@ resources:
     repo: dthorsen/chef-kubectl
     access_token: {{github-access-token}}
     username: {{github-username}}
-    private_key: {{github-private-key}}
 
 resource_types:
 - name: pull-request
