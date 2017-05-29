@@ -5,6 +5,11 @@ jobs:
   plan:
   - get: git-chef-kubectl
     trigger: true
+  - do:
+    - put: git-chef-kubectl
+      params:
+        path: git-chef-kubectl
+        status: pending
   - task: rake-ec2
     config:
       image_resource:
